@@ -2,5 +2,3 @@ openai
 streamlit
 langchain
 pinecone-client
-os
-base64
