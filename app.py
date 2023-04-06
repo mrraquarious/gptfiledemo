@@ -83,7 +83,7 @@ def switch_chat2(chat_name):
 
 
 def init_sidebar():
-    st.sidebar.title("ChatGPT")
+    st.sidebar.title("ChatWithFile")
 
     chat_name_container = st.sidebar.container()
     chat_config_expander = st.sidebar.expander('Chat configuration')
