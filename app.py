@@ -2,6 +2,7 @@ import base64
 import os
 from io import BytesIO
 from typing import List, Dict, Any
+from pypdf import PdfReader
 import openai
 import streamlit as st
 
