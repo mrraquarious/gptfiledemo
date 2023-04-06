@@ -97,7 +97,7 @@ def init_sidebar():
                     api_key=PINECONE_API_KEY,  # find at app.pinecone.io
                     environment=PINECONE_API_ENV  
                 )
-                index_name = "new"
+                index_name = "rayai"
                 docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
 
     chat_name_container = st.sidebar.container()
