@@ -22,11 +22,8 @@ MAIN = st.empty()
 PINECONE_API_KEY = '17dbbc05-f3bc-4cc2-ad40-0bf6d0b13958'
 PINECONE_API_ENV = 'eu-west1-gcp'
 
-def create_download_link(val, filename):
-    b64 = base64.b64encode(val)  # val looks like b'...'
-    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
 
-@st.experimental_memo()
+@st.cache
 def parse_pdf(file: BytesIO) -> List[str]:
     pdf = PdfReader(file)
     output = []
@@ -43,7 +40,7 @@ def parse_pdf(file: BytesIO) -> List[str]:
 
     return output
 
-@st.cache
+
 def init_openai_settings():
     openai.api_key = os.getenv("OPENAI_API_KEY")
 
