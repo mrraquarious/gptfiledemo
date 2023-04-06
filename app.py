@@ -25,6 +25,22 @@ def create_download_link(val, filename):
     b64 = base64.b64encode(val)  # val looks like b'...'
     return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
 
+@st.experimental_memo()
+def parse_pdf(file: BytesIO) -> List[str]:
+    pdf = PdfReader(file)
+    output = []
+    for page in pdf.pages:
+        text = page.extract_text()
+        # Merge hyphenated words
+        text = re.sub(r"(\w+)-\n(\w+)", r"\1\2", text)
+        # Fix newlines in the middle of sentences
+        text = re.sub(r"(?<!\n\s)\n(?!\s\n)", " ", text.strip())
+        # Remove multiple newlines
+        text = re.sub(r"\n\s*\n", "\n\n", text)
+
+        output.append(text)
+
+    return output
 
 @st.cache
 def init_openai_settings():
@@ -67,6 +83,23 @@ def switch_chat2(chat_name):
 
 def init_sidebar():
     st.sidebar.title("ChatGPT")
+    with st.sidebar:
+        uploaded_file = st.file_uploader(
+            "Upload a pdf, docx, or txt file",
+            type=["pdf"],
+        )
+
+        if uploaded_file is not None:
+            texts = parse_pdf(uploaded_file)
+            with st.spinner("Indexing document... This may take a while⏳"):
+                embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
+                pinecone.init(
+                    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
+                    environment=PINECONE_API_ENV  
+                )
+                index_name = "new"
+                docsearch = Pinecone.from_texts([t.page_content for t in texts], embeddings, index_name=index_name)
+
     chat_name_container = st.sidebar.container()
     chat_config_expander = st.sidebar.expander('Chat configuration')
     # export_pdf = st.sidebar.empty()
@@ -114,28 +147,6 @@ def init_sidebar():
         new_chat(new_chat_name)
 
     with st.sidebar.container():
-
-        uploaded_file  = chat_config_expander.file_uploader(
-            "Upload a pdf",
-            type=["pdf"],
-        )
-
-        loader = UnstructuredFileLoader(uploaded_file)
-
-        docs = loader.load()
-
-        text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-        texts = text_splitter.split_documents(docs)
-
-        embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-        
-        pinecone.init(
-            api_key=PINECONE_API_KEY,  # find at app.pinecone.io
-            environment=PINECONE_API_ENV  
-        )
-        index_name = "new"
-
-        docsearch = Pinecone.from_texts([t.page_content for t in texts], embeddings, index_name=index_name)
 
         for chat_name in st.session_state.get("chats", {}).keys():
             if chat_name == st.session_state.get('current_chat'):
