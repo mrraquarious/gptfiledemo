@@ -155,7 +155,7 @@ def init_sidebar():
     if new_chat_button:
         switch_chat(new_chat_name)
 
- with st.sidebar:
+with st.sidebar:
         uploaded_file = st.file_uploader(
             "Upload a pdf, docx, or txt file",
             type=["pdf"],
