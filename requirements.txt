@@ -1,3 +1,6 @@
 openai
 streamlit
 langchain
+pinecone
+os
+base64
