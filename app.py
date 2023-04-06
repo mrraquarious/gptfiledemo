@@ -216,7 +216,7 @@ def init_chat(chat_name):
         submitted = col2.form_submit_button("🛫")
 
         if submitted and input_text:
-            docs = docsearch.similarity_search(query, include_metadata=True)
+            docs = docsearch.similarity_search(input_text, include_metadata=True)
 
             context = [doc.page_content for doc in docs]
             context = ".".join(context)
