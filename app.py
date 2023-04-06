@@ -98,7 +98,7 @@ def init_sidebar():
                     environment=PINECONE_API_ENV  
                 )
                 index_name = "new"
-                docsearch = Pinecone.from_texts([t.page_content for t in texts], embeddings, index_name=index_name)
+                docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
 
     chat_name_container = st.sidebar.container()
     chat_config_expander = st.sidebar.expander('Chat configuration')
