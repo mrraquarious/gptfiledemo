@@ -79,11 +79,7 @@ def switch_chat2(chat_name):
         init_sidebar()
         init_chat(chat_name)
         st.stop()
-
-
-def init_sidebar():
-    st.sidebar.title("ChatGPT")
-    with st.sidebar:
+with st.sidebar:
         uploaded_file = st.file_uploader(
             "Upload a pdf, docx, or txt file",
             type=["pdf"],
@@ -99,6 +95,10 @@ def init_sidebar():
                 )
                 index_name = "rayai"
                 docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
+
+
+def init_sidebar():
+    st.sidebar.title("ChatGPT")
 
     chat_name_container = st.sidebar.container()
     chat_config_expander = st.sidebar.expander('Chat configuration')
