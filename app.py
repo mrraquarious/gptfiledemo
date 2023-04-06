@@ -7,7 +7,7 @@ from pypdf import PdfReader
 import openai
 import streamlit as st
 
-
+from langchain.vectorstores import Pinecone
 
 from langchain import OpenAI
 from langchain.document_loaders import UnstructuredFileLoader
