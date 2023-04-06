@@ -1,6 +1,7 @@
 import base64
 import os
 from io import BytesIO
+import re
 from typing import List, Dict, Any
 from pypdf import PdfReader
 import openai
