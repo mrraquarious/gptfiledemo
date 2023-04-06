@@ -79,22 +79,7 @@ def switch_chat2(chat_name):
         init_sidebar()
         init_chat(chat_name)
         st.stop()
-with st.sidebar:
-        uploaded_file = st.file_uploader(
-            "Upload a pdf, docx, or txt file",
-            type=["pdf"],
-        )
 
-        if uploaded_file is not None:
-            texts = parse_pdf(uploaded_file)
-            with st.spinner("Indexing document... This may take a while⏳"):
-                embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-                pinecone.init(
-                    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
-                    environment=PINECONE_API_ENV  
-                )
-                index_name = "rayai"
-                docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
 
 
 def init_sidebar():
@@ -170,22 +155,22 @@ def init_sidebar():
     if new_chat_button:
         switch_chat(new_chat_name)
 
-    # Download pdf
-    # if st.session_state.get('current_chat'):
-    #     chat = st.session_state["chats"][st.session_state['current_chat']]
-    #     pdf = FPDF('p', 'mm', 'A4')
-    #     pdf.add_page()
-    #     pdf.set_font(family='Times', size=16)
-    #     # pdf.cell(40, 50, txt='abcd.pdf')
-    #
-    #     if chat["answer"]:
-    #         for i in range(len(chat["answer"]) - 1, -1, -1):
-    #             # message(chat["answer"][i], key=str(i))
-    #             # message(chat['question'][i], is_user=True, key=str(i) + '_user')
-    #             pdf.cell(40, txt=f"""YOU: {chat["question"][i]}""")
-    #             pdf.cell(40, txt=f"""AI: {chat["answer"][i]}""")
-    #
-    #     export_pdf.download_button('📤 PDF', data=pdf.output(dest='S').encode('latin-1'), file_name='abcd.pdf')
+ with st.sidebar:
+        uploaded_file = st.file_uploader(
+            "Upload a pdf, docx, or txt file",
+            type=["pdf"],
+        )
+
+        if uploaded_file is not None:
+            texts = parse_pdf(uploaded_file)
+            with st.spinner("Indexing document... This may take a while⏳"):
+                embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
+                pinecone.init(
+                    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
+                    environment=PINECONE_API_ENV  
+                )
+                index_name = "rayai"
+                docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
 
 
 def init_chat(chat_name):
@@ -198,10 +183,8 @@ def init_chat(chat_name):
     if len(chat['messages']) == 1 and st.session_state["params"]["prompt"]:
         chat["messages"][0]['content'] = st.session_state["params"]["prompt"]
 
-    if chat['messages']:
-        # answer_zoom.markdown(f"""🤖 **Prompt:** {chat["messages"][0]['content']}""")
-        # answer_zoom.info(f"""Prompt: {chat["messages"][0]['content']}""", icon="ℹ️")
-        answer_zoom.caption(f"""ℹ️ Prompt: {chat["messages"][0]['content']}""")
+#     if chat['messages']:
+#         answer_zoom.caption(f"""ℹ️ Prompt: {chat["messages"][0]['content']}""")
     if chat["question"]:
         for i in range(len(chat["question"])):
             answer_zoom.markdown(f"""😃 **YOU:** {chat["question"][i]}""")
