@@ -118,7 +118,6 @@ def init_sidebar():
         uploaded_file  = chat_config_expander.file_uploader(
             "Upload a pdf",
             type=["pdf"],
-            on_change=clear_submit,
         )
 
         loader = UnstructuredFileLoader(uploaded_file)
