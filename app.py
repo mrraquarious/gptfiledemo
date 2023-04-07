@@ -203,8 +203,6 @@ def init_chat(chat_name):
 
             context = [doc.page_content for doc in docs]
             context = ".".join(context)
-            print(chat["messages"][0]["content"])
-            chat["messages"].pop(0)
             chat["messages"]=[({"role":"system","content":"You can refer to following context to answer questions:" + context})]+chat["messages"]
             chat["messages"].append({"role": "user", "content": input_text})
             answer_zoom.markdown(f"""😃 **YOU:** {input_text}""")
