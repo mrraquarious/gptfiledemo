@@ -20,6 +20,7 @@ st.set_page_config(page_title="ChatGPT", page_icon="🌐")
 
 MAIN = st.empty()
 
+uploaded_file = None
 
 PINECONE_API_KEY = '17dbbc05-f3bc-4cc2-ad40-0bf6d0b13958'
 PINECONE_API_ENV = 'eu-west1-gcp'
@@ -77,9 +78,10 @@ def switch_chat2(chat_name):
     if st.session_state.get("current_chat") != chat_name:
         st.session_state["current_chat"] = chat_name
         init_chat(chat_name)
+        init_sidebar()
         st.stop()
 
-with st.sidebar:
+def init_sidebar():
     st.sidebar.title("ChatWithFile")
     uploaded_file = st.file_uploader(
             "Upload a pdf, docx, or txt file",
@@ -256,6 +258,7 @@ if __name__ == "__main__":
     init_openai_settings()
     # init_css()
     init_session()
+    init_sidebar()
     if st.session_state.get("current_chat"):
         print("current_chat: ", st.session_state.get("current_chat"))
         init_chat((st.session_state["current_chat"]))
