@@ -256,7 +256,6 @@ if __name__ == "__main__":
     init_openai_settings()
     # init_css()
     init_session()
-    init_sidebar()
     if st.session_state.get("current_chat"):
         print("current_chat: ", st.session_state.get("current_chat"))
         init_chat((st.session_state["current_chat"]))
