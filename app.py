@@ -71,13 +71,13 @@ def switch_chat(chat_name):
     if st.session_state.get("current_chat") != chat_name:
         st.session_state["current_chat"] = chat_name
         init_chat(chat_name)
-        init_sidebar()
         st.stop()
 
 
 def switch_chat2(chat_name):
     if st.session_state.get("current_chat") != chat_name:
         st.session_state["current_chat"] = chat_name
+        init_sidebar()
         init_chat(chat_name)
         st.stop()
 
