@@ -212,6 +212,7 @@ def init_chat(chat_name):
                 answer = ask(chat["messages"])
                 answer_zoom.markdown(f"""🤖 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
+            chat["messages"].pop(0)
             if answer:
                 chat["question"].append(input_text)
                 chat["answer"].append(answer)
