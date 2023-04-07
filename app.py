@@ -20,9 +20,6 @@ st.set_page_config(page_title="ChatGPT", page_icon="🌐")
 
 MAIN = st.empty()
 
-uploaded_file = None
-docsearch = None
-
 PINECONE_API_KEY = '17dbbc05-f3bc-4cc2-ad40-0bf6d0b13958'
 PINECONE_API_ENV = 'eu-west1-gcp'
 
@@ -84,24 +81,6 @@ def switch_chat2(chat_name):
 
 def init_sidebar():
     st.sidebar.title("ChatWithFile")
-    uploaded_file = st.file_uploader(
-            "Upload a pdf, docx, or txt file",
-            type=["pdf"],
-        )
-
-    if uploaded_file is not None:
-            texts = parse_pdf(uploaded_file)
-            with st.spinner("Indexing document... This may take a while⏳"):
-                embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-                pinecone.init(
-                    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
-                    environment=PINECONE_API_ENV  
-                )
-                index_name = "rayai"
-                docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
-
-    
-
     chat_name_container = st.sidebar.container()
     chat_config_expander = st.sidebar.expander('Chat configuration')
     # export_pdf = st.sidebar.empty()
@@ -177,7 +156,21 @@ def init_sidebar():
 
 def init_chat(chat_name):
     chat = st.session_state["chats"][chat_name]
+    uploaded_file = st.file_uploader(
+            "Upload a pdf file",
+            type=["pdf"],
+        )
 
+    if uploaded_file is not None:
+            texts = parse_pdf(uploaded_file)
+            with st.spinner("Indexing document... This may take a while⏳"):
+                embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
+                pinecone.init(
+                    api_key=PINECONE_API_KEY,  # find at app.pinecone.io
+                    environment=PINECONE_API_ENV  
+                )
+             index_name = "rayai"
+             docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
