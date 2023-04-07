@@ -3,3 +3,4 @@ streamlit
 langchain
 pinecone-client
 pypdf
+faiss-cpu
