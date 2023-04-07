@@ -207,8 +207,8 @@ def init_chat(chat_name):
 #     if len(chat['messages']) == 1 and st.session_state["params"]["prompt"]:
 #         chat["messages"][0]['content'] = st.session_state["params"]["prompt"]
 
-#     if chat['messages']:
-#         answer_zoom.caption(f"""ℹ️ Prompt: {chat["messages"][0]['content']}""")
+    if chat['messages']:
+        answer_zoom.caption(f"""ℹ️ Prompt: {chat["messages"][0]['content']}""")
     if chat["question"]:
         for i in range(len(chat["question"])):
             answer_zoom.markdown(f"""😃 **YOU:** {chat["question"][i]}""")
