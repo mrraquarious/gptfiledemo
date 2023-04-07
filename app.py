@@ -197,10 +197,10 @@ def init_chat(chat_name):
     if uploaded_file is not None:
             docs = parse_pdf(uploaded_file)
             texts = text_to_docs(docs)
-            st.write(text)
+            st.write(texts)
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-                docsearch = FAISS.from_documents(docs, embeddings)
+                docsearch = FAISS.from_documents(texts, embeddings)
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
