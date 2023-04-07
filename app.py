@@ -169,8 +169,8 @@ def init_chat(chat_name):
                     api_key=PINECONE_API_KEY,  # find at app.pinecone.io
                     environment=PINECONE_API_ENV  
                 )
-             index_name = "rayai"
-             docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
+                index_name = "rayai"
+                docsearch = Pinecone.from_texts([t for t in texts], embeddings, index_name=index_name)
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
