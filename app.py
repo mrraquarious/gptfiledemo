@@ -61,7 +61,7 @@ def text_to_docs(text: str) -> List[Document]:
 
     for doc in page_docs:
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=800,
+            chunk_size=500,
             separators=["\n\n", "\n", ".", "!", "?", ",", " ", ""],
             chunk_overlap=0,
         )
@@ -205,8 +205,8 @@ def init_chat(chat_name):
     answer_zoom = st.container()
     ask_form = st.empty()
 
-    if len(chat['messages']) == 1 and st.session_state["params"]["prompt"]:
-        chat["messages"][0]['content'] = st.session_state["params"]["prompt"]
+#     if len(chat['messages']) == 1 and st.session_state["params"]["prompt"]:
+#         chat["messages"][0]['content'] = st.session_state["params"]["prompt"]
 
     if chat['messages']:
         answer_zoom.caption(f"""ℹ️ Prompt: {chat["messages"][0]['content']}""")
