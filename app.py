@@ -21,6 +21,7 @@ st.set_page_config(page_title="ChatGPT", page_icon="🌐")
 MAIN = st.empty()
 
 uploaded_file = None
+docsearch = None
 
 PINECONE_API_KEY = '17dbbc05-f3bc-4cc2-ad40-0bf6d0b13958'
 PINECONE_API_ENV = 'eu-west1-gcp'
