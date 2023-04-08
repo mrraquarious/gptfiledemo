@@ -33,7 +33,7 @@ PINECONE_API_ENV = 'eu-west1-gcp'
 
 @st.cache
 def parse_pdf(file: BytesIO) -> List[str]:
-    loader = pyPDFLoader(file)
+    loader = PyPDFLoader(file)
     output = loader.load()
 #     pdf = PdfReader(file)
 #     output = []
