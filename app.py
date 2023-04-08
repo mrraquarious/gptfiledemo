@@ -181,7 +181,7 @@ def init_chat(chat_name):
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
             result = llmChain.predict(question=input_text, context="\n\n".join(contexts), history=chat_history)
-            chat_history = chat_history + "User: " + input_text + "Bot: " + result
+            chat_history = chat_history + "User: " + input_text + "\n" + "Bot: " + result
             
             chat["messages"].append({"role": "user", "content": input_text})
             answer_zoom.markdown(f"""🐼 **YOU:** {input_text}""")
