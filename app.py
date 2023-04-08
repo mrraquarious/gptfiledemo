@@ -4,7 +4,7 @@ from io import BytesIO
 import re
 from typing import List, Dict, Any
 from pypdf import PdfReader
-from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import UnstructuredFileLoader
 from tempfile import NamedTemporaryFile
 import openai
 import streamlit as st
@@ -142,7 +142,7 @@ def init_chat(chat_name):
     if uploaded_file is not None:
             with open("myFile.pdf",'w+b') as f:
                 f.write(uploaded_file.getbuffer())
-            loader = PyPDFLoader(f.name)
+            loader = UnstructuredFileLoader(f.name)
             docs = loader.load()
             text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
             documents = text_splitter.split_documents(docs)
