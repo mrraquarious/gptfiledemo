@@ -22,12 +22,14 @@ from langchain.document_loaders import UnstructuredFileLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.document_loaders import PyPDFLoader
-
+from langchain import OpenAI, LLMChain
+from langchain.prompts import Prompt
 
 st.set_page_config(page_title="ChatGPTAnyFile", page_icon="🗃️")
 
 MAIN = st.empty()
 
+promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Use the following pieces of MemoryContext to answer the question at the end. Also remember Conversation History is a list of Conversation objects.---ConversationHistory: {history}---MemoryContext: {context}---Human: {question} Bot:"
 
 @st.cache
 def init_openai_settings():
@@ -150,7 +152,9 @@ def init_chat(chat_name):
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
                 docsearch = FAISS.from_documents(documents, embeddings)
-                qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=st.session_state["params"]["temperature"],max_tokens = st.session_state["params"]["max_tokens"]), docsearch.as_retriever())
+                
+                
+#                 qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=st.session_state["params"]["temperature"],max_tokens = st.session_state["params"]["max_tokens"]), docsearch.as_retriever())
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
@@ -169,8 +173,13 @@ def init_chat(chat_name):
         submitted = col2.form_submit_button("🥏")
 
         if submitted and input_text:
+            relevant = docsearch.similarity_search(input_text, 3)
+            prompt = Prompt(template=promptTemplate, input_variables=["history", "context", "question"])
             
-            result = qa({"question": input_text, "chat_history": chat_history})
+            llmChain = LLMChain(prompt=prompt, llm=OpenAI(model_name="gpt-3.5-turbo",temperature=0.25))
+            for i, doc in enumerate(relevant):
+                contexts.append(f"Context {i}:\n{doc.page_content}")
+            result = llmChain.predict(question=input_text, context="\n\n".join(contexts), history=chat_history)
             chat_history += [(input_text, result["answer"])]
             
             chat["messages"].append({"role": "user", "content": input_text})
