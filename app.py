@@ -23,7 +23,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.document_loaders import PyPDFLoader
 
 
-st.set_page_config(page_title="ChatGPT", page_icon="🗃️")
+st.set_page_config(page_title="ChatGPTAnyFile", page_icon="🗃️")
 
 MAIN = st.empty()
 
