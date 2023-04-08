@@ -36,7 +36,7 @@ PINECONE_API_ENV = 'eu-west1-gcp'
 def parse_pdf(file: BytesIO) -> List[str]:
     with NamedTemporaryFile(dir='.', suffix='.pdf') as f:
         f.write(file.getbuffer())
-    loader = PyPDFLoader("./"+file.name)
+    loader = PyPDFLoader(file.name)
     output = loader.load()
 #     pdf = PdfReader(file)
 #     output = []
@@ -206,7 +206,10 @@ def init_chat(chat_name):
     qa = None
     chat_history = []
     if uploaded_file is not None:
-            docs = parse_pdf(uploaded_file)
+            with NamedTemporaryFile(dir='.', suffix='.pdf') as f:
+                f.write(file.getbuffer())
+            loader = PyPDFLoader(file.name)
+            docs = loader.load()
             texts = text_to_docs(docs)
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
