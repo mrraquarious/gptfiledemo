@@ -4,4 +4,3 @@ langchain
 pinecone-client
 pypdf
 faiss-cpu
-tempfile
