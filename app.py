@@ -5,6 +5,7 @@ import re
 from typing import List, Dict, Any
 from pypdf import PdfReader
 from langchain.document_loaders import PyPDFLoader
+from tempfile import NamedTemporaryFile
 import openai
 import streamlit as st
 
@@ -33,7 +34,9 @@ PINECONE_API_ENV = 'eu-west1-gcp'
 
 @st.cache
 def parse_pdf(file: BytesIO) -> List[str]:
-    loader = PyPDFLoader(file)
+    with NamedTemporaryFile(dir='.', suffix='.pdf') as f:
+        f.write(file.getbuffer())
+    loader = PyPDFLoader(file.name)
     output = loader.load()
 #     pdf = PdfReader(file)
 #     output = []
