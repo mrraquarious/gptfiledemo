@@ -11,6 +11,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores.faiss import FAISS
 from langchain.docstore.document import Document
 from langchain.vectorstores import FAISS, VectorStore
+from langchain.llms import OpenAI
+from langchain.chains import ConversationalRetrievalChain
 
 from langchain import OpenAI
 from langchain.document_loaders import UnstructuredFileLoader
@@ -194,12 +196,15 @@ def init_chat(chat_name):
             type=["pdf"],
         )
     docsearch = None
+    qa = None
+    chat_history = []
     if uploaded_file is not None:
             docs = parse_pdf(uploaded_file)
             texts = text_to_docs(docs)
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
                 docsearch = FAISS.from_documents(texts, embeddings)
+                qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), docsearch.as_retriever())
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
@@ -223,16 +228,15 @@ def init_chat(chat_name):
         submitted = col2.form_submit_button("🛫")
 
         if submitted and input_text:
-            docs = docsearch.similarity_search(input_text, include_metadata=True)
-
-            context = [doc.page_content for doc in docs]
-            context = ".".join(context)
-            chat["messages"]=[({"role":"system","content":"You can only refer to following context to answer questions:" + context})]+chat["messages"]
+            
+            result = qa({"question": input_text, "chat_history": chat_history})
+            chat_history += [(input_text, result["answer"])]
+            
             chat["messages"].append({"role": "user", "content": input_text})
             answer_zoom.markdown(f"""😃 **YOU:** {input_text}""")
 
             with st.spinner("Wait for responding..."):
-                answer = ask(chat["messages"])
+                answer = result["answer"]
                 answer_zoom.markdown(f"""🤖 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
             if answer:
