@@ -141,7 +141,7 @@ def init_chat(chat_name):
         )
     docsearch = None
     qa = None
-    chat_history = []
+    chat_history = ""
     if uploaded_file is not None:
             with open("myFile.pdf",'w+b') as f:
                 f.write(uploaded_file.getbuffer())
