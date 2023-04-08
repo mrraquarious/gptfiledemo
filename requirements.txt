@@ -6,3 +6,4 @@ pypdf
 faiss-cpu
 tiktoken
 unstructured
+detectron2
