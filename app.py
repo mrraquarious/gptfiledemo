@@ -150,7 +150,7 @@ def init_chat(chat_name):
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
                 docsearch = FAISS.from_documents(documents, embeddings)
-                qa = ConversationalRetrievalChain.from_llm(ChatOpenAI(temperature=st.session_state["params"]["temperature"],max_tokens = st.session_state["params"]["max_tokens"]), docsearch.as_retriever())
+                qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=st.session_state["params"]["temperature"],max_tokens = st.session_state["params"]["max_tokens"]), docsearch.as_retriever())
     # with MAIN.container():
     answer_zoom = st.container()
     ask_form = st.empty()
