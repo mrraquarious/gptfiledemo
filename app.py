@@ -160,14 +160,14 @@ def init_chat(chat_name):
         for i in range(len(chat["question"])):
             answer_zoom.markdown(f"""🐼 **YOU:** {chat["question"][i]}""")
             if i < len(chat["answer"]):
-                answer_zoom.markdown(f"""🤖 **AI:** {chat["answer"][i]}""")
+                answer_zoom.markdown(f"""👻 **AI:** {chat["answer"][i]}""")
 
     with ask_form.form(chat_name):
         col1, col2 = st.columns([10, 1])
         input_text = col1.text_area("🐼 You: ", "What would you like to know?", key="input", max_chars=2000,
                                      label_visibility='collapsed')
 
-        submitted = col2.form_submit_button("🛫")
+        submitted = col2.form_submit_button("🥏")
 
         if submitted and input_text:
             
@@ -179,7 +179,7 @@ def init_chat(chat_name):
 
             with st.spinner("Wait for responding..."):
                 answer = result["answer"]
-                answer_zoom.markdown(f"""🤖 **AI:** {answer}""")
+                answer_zoom.markdown(f"""👻 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
             if answer:
                 chat["question"].append(input_text)
