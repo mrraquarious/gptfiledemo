@@ -6,3 +6,4 @@ pypdf
 faiss-cpu
 tiktoken
 unstructured
+unstructured[local-inference]
