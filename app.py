@@ -145,7 +145,7 @@ def init_chat(chat_name):
                 f.write(uploaded_file.getbuffer())
             loader = UnstructuredFileLoader(f.name)
             docs = loader.load()
-            text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+            text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=0)
             documents = text_splitter.split_documents(docs)
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
