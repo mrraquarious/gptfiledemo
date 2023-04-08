@@ -4,6 +4,7 @@ from io import BytesIO
 import re
 from typing import List, Dict, Any
 from pypdf import PdfReader
+from langchain.document_loaders import PyPDFLoader
 import openai
 import streamlit as st
 
