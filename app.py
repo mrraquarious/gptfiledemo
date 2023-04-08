@@ -29,7 +29,7 @@ st.set_page_config(page_title="ChatGPTAnyFile", page_icon="🗃️")
 
 MAIN = st.empty()
 
-promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Please only use the following pieces of MemoryContext to answer the question, if you cannot answer with the MemoryContext, please respond 'I don't know the answer given the context'. ---MemoryContext: "
+promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Only use the following pieces of MemoryContext to answer the question. ---MemoryContext: "
 
 @st.cache
 def init_openai_settings():
