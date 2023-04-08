@@ -29,7 +29,7 @@ st.set_page_config(page_title="ChatGPTAnyFile", page_icon="🗃️")
 
 MAIN = st.empty()
 
-promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Use the following pieces of MemoryContext to answer the question at the end. ---MemoryContext: {context}"
+promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Use the following pieces of MemoryContext to answer the question at the end. ---MemoryContext: "
 
 @st.cache
 def init_openai_settings():
@@ -180,14 +180,14 @@ def init_chat(chat_name):
             contexts=[]
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
-            result = llmChain.predict(question=input_text, context="\n\n".join(contexts), history=chat_history)
-            chat_history = chat_history + "User: " + input_text + "\n" + "Bot: " + result
+            context = "\n\n".join(contexts)
+            chat["messages"]=[({"role":"system","content":promptTemplate + context})]+chat["messages"]
             
             chat["messages"].append({"role": "user", "content": input_text})
             answer_zoom.markdown(f"""🐼 **YOU:** {input_text}""")
 
             with st.spinner("Wait for responding..."):
-                answer = result
+                answer = ask(chat["messages"])
                 answer_zoom.markdown(f"""👻 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
             if answer:
@@ -215,7 +215,20 @@ div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > [da
     """,
         unsafe_allow_html=True,
     )
-
+    
+    
+def ask(messages):
+    if st.session_state["params"]["model"] == 'gpt-3.5-turbo':
+        response = openai.ChatCompletion.create(
+            model=st.session_state["params"]["model"],
+            temperature=st.session_state["params"]["temperature"],
+            messages=messages,
+            max_tokens=st.session_state["params"]["max_tokens"],
+        )
+        answer = response["choices"][0]["message"]["content"]
+    else:
+        raise NotImplementedError('Not implemented yet!')
+    return answer
 
 if __name__ == "__main__":
     print("loading")
