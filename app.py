@@ -174,9 +174,6 @@ def init_chat(chat_name):
 
         if submitted and input_text:
             relevant = docsearch.similarity_search(input_text, 3)
-            prompt = Prompt(template=promptTemplate, input_variables=["history", "context", "question"])
-            
-            llmChain = LLMChain(prompt=prompt, llm=OpenAI(model_name="gpt-3.5-turbo",temperature=0.25))
             contexts=[]
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
