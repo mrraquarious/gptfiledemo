@@ -206,9 +206,9 @@ def init_chat(chat_name):
     qa = None
     chat_history = []
     if uploaded_file is not None:
-            with NamedTemporaryFile(dir='.', suffix='.pdf') as f:
+            with open("myFile.pdf",'w+b') as f:
                 f.write(uploaded_file.getbuffer())
-            loader = PyPDFLoader(uploaded_file.name)
+            loader = PyPDFLoader(f.name)
             docs = loader.load()
             texts = text_to_docs(docs)
             with st.spinner("Indexing document... This may take a while⏳"):
