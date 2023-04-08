@@ -210,10 +210,11 @@ def init_chat(chat_name):
                 f.write(uploaded_file.getbuffer())
             loader = PyPDFLoader(f.name)
             docs = loader.load()
-            texts = text_to_docs(docs)
+            text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+            documents = text_splitter.split_documents(docs)
             with st.spinner("Indexing document... This may take a while⏳"):
                 embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-                docsearch = FAISS.from_documents(texts, embeddings)
+                docsearch = FAISS.from_documents(documents, embeddings)
                 qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), docsearch.as_retriever())
     # with MAIN.container():
     answer_zoom = st.container()
