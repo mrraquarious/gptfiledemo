@@ -5,3 +5,4 @@ pinecone-client
 pypdf
 faiss-cpu
 tiktoken
+unstructured
