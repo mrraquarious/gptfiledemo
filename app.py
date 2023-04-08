@@ -29,7 +29,7 @@ st.set_page_config(page_title="ChatGPTAnyFile", page_icon="🗃️")
 
 MAIN = st.empty()
 
-promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Use the following pieces of MemoryContext to answer the question at the end. Also remember ConversationHistory is listing all the previous questions that user asked and the answer that bot provided.---ConversationHistory: {history}---MemoryContext: {context}---Human: {question} Bot:"
+promptTemplate = "You will talk to the human conversing with you and provide meaningful answers as they ask questions.Be very logically and technically oriented. Use the following pieces of MemoryContext to answer the question at the end. ---MemoryContext: {context}"
 
 @st.cache
 def init_openai_settings():
