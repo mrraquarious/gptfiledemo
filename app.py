@@ -45,9 +45,7 @@ def new_chat(chat_name):
         st.session_state["chats"][chat_name] = {
             "answer": [],
             "question": [],
-            "messages": [
-                {"role": "system", "content": st.session_state["params"]["prompt"]}
-            ],
+            "messages": [],
         }
     return chat_name
 
