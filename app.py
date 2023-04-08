@@ -181,13 +181,13 @@ def init_chat(chat_name):
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
             result = llmChain.predict(question=input_text, context="\n\n".join(contexts), history=chat_history)
-            chat_history = chat_history + "User: " + input_text + "Bot: " + result["answer"]
+            chat_history = chat_history + "User: " + input_text + "Bot: " + result
             
             chat["messages"].append({"role": "user", "content": input_text})
             answer_zoom.markdown(f"""🐼 **YOU:** {input_text}""")
 
             with st.spinner("Wait for responding..."):
-                answer = result["answer"]
+                answer = result
                 answer_zoom.markdown(f"""👻 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
             if answer:
