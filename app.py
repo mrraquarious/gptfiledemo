@@ -133,8 +133,8 @@ def init_sidebar():
 def init_chat(chat_name):
     chat = st.session_state["chats"][chat_name]
     uploaded_file = st.file_uploader(
-            "Upload a pdf file",
-            type=["pdf"],
+            "Upload a pdf, docx, or txt file",
+            type=["pdf", "docx", "txt", "csv", "pptx", "js", "py", "json", "html", "css", "md"],
         )
     docsearch = None
     qa = None
