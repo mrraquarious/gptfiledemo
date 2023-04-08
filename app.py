@@ -177,6 +177,7 @@ def init_chat(chat_name):
             prompt = Prompt(template=promptTemplate, input_variables=["history", "context", "question"])
             
             llmChain = LLMChain(prompt=prompt, llm=OpenAI(model_name="gpt-3.5-turbo",temperature=0.25))
+            contexts=[]
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
             result = llmChain.predict(question=input_text, context="\n\n".join(contexts), history=chat_history)
