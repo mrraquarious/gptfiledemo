@@ -173,7 +173,7 @@ def init_chat(chat_name):
         submitted = col2.form_submit_button("🥏")
 
         if submitted and input_text:
-            relevant = docsearch.similarity_search(input_text, 3)
+            relevant = docsearch.similarity_search(input_text, 1)
             contexts=[]
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
