@@ -178,6 +178,7 @@ def init_chat(chat_name):
             for i, doc in enumerate(relevant):
                 contexts.append(f"Context {i}:\n{doc.page_content}")
             context = "\n\n".join(contexts)
+            st.write(context)
             chat["messages"]=[({"role":"system","content":promptTemplate + context})]+chat["messages"]
             
             chat["messages"].append({"role": "user", "content": input_text})
