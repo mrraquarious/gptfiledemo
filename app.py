@@ -226,7 +226,7 @@ def ask(messages):
             max_tokens=st.session_state["params"]["max_tokens"],
             stream = True
         )
-        for chuck in response:
+        for chunk in response:
             chunk_message = chunk['choices'][0]['delta']
             answer_zoom.markdown(f"""{chunk_message}""")
         answer += chunk_message
