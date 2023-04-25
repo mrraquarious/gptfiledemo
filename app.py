@@ -226,6 +226,7 @@ def ask(messages):
             max_tokens=st.session_state["params"]["max_tokens"],
         )
         answer = response["choices"][0]["message"]["content"]
+        answer_zoom.markdown(f"""👻 **AI:** {answer}""")
     else:
         raise NotImplementedError('Not implemented yet!')
     return answer
