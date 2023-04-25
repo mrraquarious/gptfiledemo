@@ -186,7 +186,6 @@ def init_chat(chat_name):
 
             with st.spinner("Wait for responding..."):
                 answer = ask(chat["messages"])
-                answer_zoom.markdown(f"""👻 **AI:** {answer}""")
             chat["messages"].append({"role": "assistant", "content": answer})
             chat["messages"].pop(0)
             st.write(chat["messages"])
@@ -218,15 +217,19 @@ div[data-testid="stVerticalBlock"] > div[style*="flex-direction: column;"] > [da
     
     
 def ask(messages):
+    answer = ""
     if st.session_state["params"]["model"] == 'gpt-3.5-turbo':
         response = openai.ChatCompletion.create(
             model=st.session_state["params"]["model"],
             temperature=st.session_state["params"]["temperature"],
             messages=messages,
             max_tokens=st.session_state["params"]["max_tokens"],
+            stream = True
         )
-        answer = response["choices"][0]["message"]["content"]
-        answer_zoom.markdown(f"""👻 **AI:** {answer}""")
+        for chuck in response:
+            chunk_message = chunk['choices'][0]['delta']
+            answer_zoom.markdown(f"""{chunk_message}""")
+        answer += chunk_message
     else:
         raise NotImplementedError('Not implemented yet!')
     return answer
